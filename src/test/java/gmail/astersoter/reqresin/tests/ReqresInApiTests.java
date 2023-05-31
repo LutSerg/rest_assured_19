@@ -79,8 +79,7 @@ public class ReqresInApiTests {
 
     @Test
     void deleteTest() {
-        given()
-        .delete("https://reqres.in/api/users/2")
+        delete("https://reqres.in/api/users/2")
                 .then()
                 .statusCode(204);
     }
