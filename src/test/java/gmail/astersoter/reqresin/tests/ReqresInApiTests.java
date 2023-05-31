@@ -8,12 +8,12 @@ import static io.restassured.http.ContentType.JSON;
 import static io.restassured.http.ContentType.fromContentType;
 import static org.hamcrest.Matchers.*;
 
-public class ReqresInApiTests {
+public class ReqresInApiTests extends TestBase{
 
     @Test
     void singleUserEmailTest() {
 
-        get("https://reqres.in/api/users/2")
+        get("/users/2")
                 .then()
                 .log().status()
                 .log().body()
@@ -24,7 +24,7 @@ public class ReqresInApiTests {
 
     @Test
     void userInArrayTest() {
-        get("https://reqres.in/api/users?page=2")
+        get("/users?page=2")
                 .then()
                 .log().status()
                 .log().body()
@@ -48,7 +48,7 @@ public class ReqresInApiTests {
                 .body(registerUser)
                 .contentType(JSON)
                 .when()
-                .post("https://reqres.in/api/register")
+                .post("/register")
                 .then()
                 .log().body()
                 .statusCode(200)
@@ -69,7 +69,7 @@ public class ReqresInApiTests {
                 .log().uri()
                 .body(putUser)
                 .when()
-                .put("https://reqres.in/api/users/2")
+                .put("/users/2")
                 .then()
                 .log().body()
                 .statusCode(200)
@@ -79,8 +79,13 @@ public class ReqresInApiTests {
 
     @Test
     void deleteTest() {
-        delete("https://reqres.in/api/users/2")
+        given()
+                .log().uri()
+                .log().method()
+                .when()
+                .delete("/users/2")
                 .then()
+                .log().status()
                 .statusCode(204);
     }
 }
