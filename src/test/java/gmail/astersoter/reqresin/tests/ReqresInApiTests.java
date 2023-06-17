@@ -8,21 +8,14 @@ import gmail.astersoter.reqresin.models.lombok.update.UpdateModelRq;
 import gmail.astersoter.reqresin.models.lombok.update.UpdateModelRs;
 import gmail.astersoter.reqresin.models.lombok.user.UserResponse;
 import gmail.astersoter.reqresin.models.lombok.users.GetUsersModelRs;
+import gmail.astersoter.reqresin.specs.RqSpecs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static gmail.astersoter.reqresin.specs.CreateUserSpecs.createUserRqSpec;
-import static gmail.astersoter.reqresin.specs.CreateUserSpecs.createUserRsSpec;
-import static gmail.astersoter.reqresin.specs.DeleteSpec.deleteRqSpec;
-import static gmail.astersoter.reqresin.specs.DeleteSpec.deleteRsSpec;
-import static gmail.astersoter.reqresin.specs.RegistrationSpecs.registrationRqSpec;
-import static gmail.astersoter.reqresin.specs.RegistrationSpecs.registrationRsSpec;
-import static gmail.astersoter.reqresin.specs.UpdateUserSpecs.updateUserRqSpec;
-import static gmail.astersoter.reqresin.specs.UpdateUserSpecs.updateUserRsSpec;
-import static gmail.astersoter.reqresin.specs.UserSpecs.userRqSpec;
-import static gmail.astersoter.reqresin.specs.UserSpecs.userRsSpec;
-import static gmail.astersoter.reqresin.specs.UsersSpecs.usersRqSpec;
-import static gmail.astersoter.reqresin.specs.UsersSpecs.usersRsSpec;
+import static gmail.astersoter.reqresin.specs.RqSpecs.RqSpec;
+import static gmail.astersoter.reqresin.specs.RsSpecs.RsSpec;
+import static gmail.astersoter.reqresin.specs.RsSpecs.createUserRsSpec201;
+
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,11 +28,11 @@ public class ReqresInApiTests extends TestBase {
     @DisplayName("Тест запроса к Single User")
     void singleUserTest() {
         UserResponse userResponse = step("request data", () ->
-                given(userRqSpec)
+                given(RqSpec)
                         .when()
                         .get("/users/2")
                         .then()
-                        .spec(userRsSpec)
+                        .spec(RsSpec)
                         .extract().as(UserResponse.class));
 
         step("verify response", () -> {
@@ -55,11 +48,11 @@ public class ReqresInApiTests extends TestBase {
     void userInArrayTest() {
 
         GetUsersModelRs getUsers = step("request data", () ->
-                given(usersRqSpec)
+                given(RqSpec)
                 .when()
                 .get("/users?page=2")
                 .then()
-                .spec(usersRsSpec)
+                .spec(RsSpec)
                 .extract().as(GetUsersModelRs.class));
         step("verify response", () ->
         assertEquals("Lindsay", getUsers.getData().get(1).getFirstName()));
@@ -76,12 +69,12 @@ public class ReqresInApiTests extends TestBase {
         int id = 4;
 
         RegisterModelRs registerResponse = step("request data", () ->
-                given(registrationRqSpec)
+                given(RqSpec)
                 .body(rqBody)
                 .when()
                 .post("/register")
                 .then()
-                .spec(registrationRsSpec)
+                .spec(RsSpec)
                 .extract().as(RegisterModelRs.class));
 
         step("verify response", () -> {
@@ -99,12 +92,12 @@ public class ReqresInApiTests extends TestBase {
         updateRq.setJob("zion resident");
 
         UpdateModelRs updateModelRs = step("request data", () ->
-                given(updateUserRqSpec)
+                given(RqSpec)
                 .body(updateRq)
                 .when()
                 .put("/users/2")
                 .then()
-                .spec(updateUserRsSpec)
+                .spec(RsSpec)
                 .extract().as(UpdateModelRs.class));
         step("verify response", () ->
         assertThat(updateModelRs.getUpdatedAt(), notNullValue()));
@@ -119,12 +112,12 @@ public class ReqresInApiTests extends TestBase {
         createUserRq.setJob("leader");
 
         CreateUserModelRs createUserRs = step("request data", () ->
-                given(createUserRqSpec)
+                given(RqSpec)
                 .body(createUserRq)
                 .when()
                 .post("users")
                 .then()
-                .spec(createUserRsSpec)
+                .spec(createUserRsSpec201)
                 .extract().as(CreateUserModelRs.class));
 
         step("verify response", () -> {
@@ -135,16 +128,16 @@ public class ReqresInApiTests extends TestBase {
 
 
     @Test
-    @DisplayName("Тест на поулчение статуса при запросе Delete")
+    @DisplayName("Тест на получение статуса при запросе Delete")
     void deleteTest() {
 
         int resultCode = 204;
         step("test data", () ->
-        given(deleteRqSpec)
+        given(RqSpecs.deleteRqSpec)
                 .when()
                 .delete("/users/2")
                 .then()
-                .spec(deleteRsSpec));
+                .spec(RqSpecs.deleteRsSpec204));
     }
 }
 
