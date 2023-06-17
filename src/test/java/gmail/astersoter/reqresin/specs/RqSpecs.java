@@ -23,8 +23,5 @@ public class RqSpecs {
             .log().method()
             .filter(withCustomTemplates());
 
-    public static ResponseSpecification deleteRsSpec204 = new ResponseSpecBuilder()
-            .log(STATUS)
-            .expectStatusCode(204)
-            .build();
+
 }

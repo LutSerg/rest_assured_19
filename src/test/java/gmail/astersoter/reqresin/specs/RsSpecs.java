@@ -17,4 +17,9 @@ public class RsSpecs {
             .log(BODY)
             .expectStatusCode(200)
             .build();
+
+    public static ResponseSpecification deleteRsSpec204 = new ResponseSpecBuilder()
+            .log(STATUS)
+            .expectStatusCode(204)
+            .build();
 }

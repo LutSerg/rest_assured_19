@@ -9,6 +9,7 @@ import gmail.astersoter.reqresin.models.lombok.update.UpdateModelRs;
 import gmail.astersoter.reqresin.models.lombok.user.UserResponse;
 import gmail.astersoter.reqresin.models.lombok.users.GetUsersModelRs;
 import gmail.astersoter.reqresin.specs.RqSpecs;
+import gmail.astersoter.reqresin.specs.RsSpecs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -137,7 +138,7 @@ public class ReqresInApiTests extends TestBase {
                 .when()
                 .delete("/users/2")
                 .then()
-                .spec(RqSpecs.deleteRsSpec204));
+                .spec(RsSpecs.deleteRsSpec204));
     }
 }
 
